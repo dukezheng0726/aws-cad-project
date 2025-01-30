@@ -11,9 +11,6 @@ export class WordpressVpcStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-
-  // VPC-SSM-Parameter with SSM Param
-    
     const CustomVPC = new ec2.Vpc(this, 'CustomVPC', {
       ipAddresses: ec2.IpAddresses.cidr('10.50.0.0/16'),
       createInternetGateway: true
@@ -24,6 +21,31 @@ export class WordpressVpcStack extends cdk.Stack {
       exportName: 'Application-VPC-ID',
     });
 
+    const publicSubnets = CustomVPC.publicSubnets;
+
+    new cdk.CfnOutput(this, 'PublicSubnetID1Output', {
+      value: publicSubnets[0].subnetId,
+      exportName: 'Public-Subnet1-ID',
+    });
+
+    new cdk.CfnOutput(this, 'PublicSubnetID2Output', {
+      value: publicSubnets[1].subnetId,
+      exportName: 'Public-Subnet2-ID',
+    });
+
+    const privateSubnets = CustomVPC.privateSubnets;
+
+    new cdk.CfnOutput(this, 'PrivateSubnetID1Output', {
+      value: privateSubnets[0].subnetId,
+      exportName: 'Private-Subnet1-ID',
+    });
+
+    new cdk.CfnOutput(this, 'PrivateSubnetID2Output', {
+      value: privateSubnets[1].subnetId,
+      exportName: 'Private-Subnet2-ID',
+    });
+ 
+    
     const publicSubnetIds = CustomVPC.publicSubnets.map(subnet => subnet.subnetId);
     // Output the public subnet IDs
     new cdk.CfnOutput(this, 'CustomVPCPublicSubnetIds', {
