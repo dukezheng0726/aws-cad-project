@@ -45,20 +45,14 @@ export class WordpressVpcStack extends cdk.Stack {
       exportName: 'Private-Subnet2-ID',
     });
  
-    
     const publicSubnetIds = CustomVPC.publicSubnets.map(subnet => subnet.subnetId);
     // Output the public subnet IDs
     new cdk.CfnOutput(this, 'CustomVPCPublicSubnetIds', {
       value: JSON.stringify(publicSubnetIds),
       exportName: 'Application-PUBLIC-SUBNET-IDS',
     });
-    // const ssmVPC = new ssm.StringParameter(this, 'VPCSsmParameter', {
-    //   parameterName: '/AWS/CAD/VPC/ID',
-    //   stringValue: CustomVPC.vpcId,
-    // });
-
     
-  // Security Group - ALB with SSM Param
+  // Security Group - ALB 
    const albSecurityGroup = new ec2.SecurityGroup(this, 'ALBSecurityGroup', {
       vpc: CustomVPC 
    });
@@ -77,15 +71,8 @@ export class WordpressVpcStack extends cdk.Stack {
     value: albSecurityGroup.securityGroupId,
     exportName: 'Application-ALB-SG-ID',
    });
-
-  //  const ssmALBSecurityGroup = new ssm.StringParameter(this, 'ALBSsmParameter', {
-  //   parameterName: '/AWS/CAD/ALB/SG/ID',
-  //   stringValue: albSecurityGroup.securityGroupId,
-  //  });
-
-
     
-  // Security Group – EC2 with SSM Param
+  // Security Group – EC2 
    const ec2SecurityGroup = new ec2.SecurityGroup(this, 'EC2SecurityGroup', {
       vpc: CustomVPC 
    });
@@ -110,12 +97,8 @@ export class WordpressVpcStack extends cdk.Stack {
     exportName: 'Application-EC2-SG-ID',
   });
 
-  //  const ssmEC2SecurityGroup = new ssm.StringParameter(this, 'EC2SsmParameter', {
-  //   parameterName: '/AWS/CAD/EC2/SG/ID',
-  //   stringValue: ec2SecurityGroup.securityGroupId,
-  //  });    
-    
-  // Security Group – RDS with SSM Param
+
+  // Security Group – RDS 
    const rdsSecurityGroup = new ec2.SecurityGroup(this, 'RDSSecurityGroup', {
       vpc: CustomVPC 
    });
@@ -130,14 +113,8 @@ export class WordpressVpcStack extends cdk.Stack {
     exportName: 'Application-RDS-SG-ID',
    });
 
-  //  const ssmRDSSecurityGroup = new ssm.StringParameter(this, 'RDSSsmParameter', {
-  //   parameterName: '/AWS/CAD/RDS/SG/ID',
-  //   stringValue: rdsSecurityGroup.securityGroupId,
-  //  });    
     
-    
-    // Security Group - RDS-subnet-group with SSM Param
-    
+    // Security Group - RDS-subnet-group 
     const rdsSubnetGroup = new rds.SubnetGroup(this, 'RDSSubnetGroup', {
       description: 'RDS subnet group',
       vpc: CustomVPC,
@@ -153,10 +130,5 @@ export class WordpressVpcStack extends cdk.Stack {
       value: rdsSubnetGroup.subnetGroupName,
       exportName: 'Application-RDS-SubnetGroup-ID',
     });
-
-    // const ssmRDSSubnetGroup = new ssm.StringParameter(this, 'RDSSubnetGroupSsmParameter', {
-    //   parameterName: '/AWS/CAD/RDS/SUBNET/GROUP',
-    //   stringValue: rdsSubnetGroup.subnetGroupName,
-    //  });    
   }
 }
