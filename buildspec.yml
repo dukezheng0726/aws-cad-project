@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    ACTION: "apply"                               # Default action: 'apply' or 'destroy'
+    ACTION: "apply"                               
 
 phases:
   install:
@@ -15,9 +15,6 @@ phases:
       - npm install -g aws-cdk  
       - npm install             
       - npm version
-
-  pre_build:
-    commands:
 
   build:
     commands:
