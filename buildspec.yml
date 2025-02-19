@@ -10,7 +10,7 @@ phases:
       nodejs: 18
     commands:
       - echo "Installing AWS CDK CLI..."
-      - ls 
+      - ls -l
       - cd wordpress-app
       - npm install -g aws-cdk  
       - npm install             
