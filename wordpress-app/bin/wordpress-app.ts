@@ -7,7 +7,7 @@ import { WordpressVpcStack } from '../lib/wordpress-vpc-stack';
 
 const app = new cdk.App();
 
-const deployment = { "stack":"A"}
+const deployment = { "stack":"V"}
 
 if ( ["V"].includes(deployment.stack)) {
   new WordpressVpcStack(app, 'WordpressVpcStack', {
