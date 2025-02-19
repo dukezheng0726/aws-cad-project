@@ -1,0 +1,49 @@
+version: 0.2
+
+env:
+  variables:
+    TF_STATE_BUCKET: "yan-terraform"  # S3 bucket for storing Terraform state
+    TF_STATE_KEY: "terraform.tfstate"             # State file location in S3
+    TF_REGION: ca-central-1                       # AWS Region
+    ACTION: "apply"                               # Default action: 'apply' or 'destroy'
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      # - echo "Installing Terraform on Amazon Linux..."
+      # - sudo yum update -y
+      # - sudo yum install -y wget unzip
+      # - wget https://releases.hashicorp.com/terraform/1.6.0/terraform_1.6.0_linux_amd64.zip
+      # - unzip terraform_1.6.0_linux_amd64.zip
+      # - sudo mv terraform /usr/local/bin/
+      # - terraform --version
+
+      - echo "Installing AWS CDK CLI..."
+      - cd /aws-cad-project/wordpree-app
+      - npm install -g aws-cdk  # 安装 AWS CDK CLI
+      - npm install             # 安装 package.json 依赖
+      - npm version
+
+  pre_build:
+    commands:
+      # - echo "Configuring AWS CLI..."
+      # - aws sts get-caller-identity
+      # - echo "Initializing Terraform..."
+      # - terraform init -backend-config="bucket=$TF_STATE_BUCKET" -backend-config="key=$TF_STATE_KEY" -backend-config="region=$TF_REGION"
+      # - terraform validate
+
+  build:
+    commands:
+      - echo "Building TypeScript code..."
+      - cd /aws-cad-project/wordpree-app
+      - npm run build            # 编译 TypeScript
+      - echo "Synthesizing CloudFormation template..."
+      - cdk synth                # 生成 CloudFormation 模板
+
+
+  post_build:
+    commands:
+      - echo "Deploying CDK stack..."
+      - cdk deploy --require-approval never  # 直接部署，无需手动确认
