@@ -21,7 +21,7 @@ phases:
       # - terraform --version
 
       - echo "Installing AWS CDK CLI..."
-      - cd /aws-cad-project/wordpress-app
+      - cd /wordpress-app
       - npm install -g aws-cdk  # 安装 AWS CDK CLI
       - npm install             # 安装 package.json 依赖
       - npm version
