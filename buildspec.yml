@@ -21,7 +21,7 @@ phases:
       # - terraform --version
 
       - echo "Installing AWS CDK CLI..."
-      - cd /aws-cad-project/wordpree-app
+      - cd /aws-cad-project/wordpress-app
       - npm install -g aws-cdk  # 安装 AWS CDK CLI
       - npm install             # 安装 package.json 依赖
       - npm version
@@ -37,7 +37,7 @@ phases:
   build:
     commands:
       - echo "Building TypeScript code..."
-      - cd /aws-cad-project/wordpree-app
+      - cd /aws-cad-project/wordpress-app
       - npm run build            # 编译 TypeScript
       - echo "Synthesizing CloudFormation template..."
       - cdk synth                # 生成 CloudFormation 模板
