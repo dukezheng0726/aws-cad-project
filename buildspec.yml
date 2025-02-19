@@ -2,9 +2,6 @@ version: 0.2
 
 env:
   variables:
-    TF_STATE_BUCKET: "yan-terraform"  # S3 bucket for storing Terraform state
-    TF_STATE_KEY: "terraform.tfstate"             # State file location in S3
-    TF_REGION: ca-central-1                       # AWS Region
     ACTION: "apply"                               # Default action: 'apply' or 'destroy'
 
 phases:
@@ -27,10 +24,22 @@ phases:
       - echo "Building TypeScript code..."
       - npm run build           
       - echo "Synthesizing CloudFormation template..."
-      - cdk synth               
+      - cdk synth   
+      - ls -l 
 
 
   post_build:
     commands:
-      - echo "Deploying CDK stack..."
-      - cdk deploy --require-approval never  
+      - |
+        if [ "$ACTION" == "apply" ]; then
+          echo "Deploying CDK stack..."
+          cdk deploy --require-approval never 
+
+        elif [ "$ACTION" == "destroy" ]; then
+          echo "Destroying CDK stack..."
+          cdk destroy --force
+
+        else
+          echo "Invalid ACTION parameter. Use 'apply' or 'destroy'."
+          exit 1
+        fi
