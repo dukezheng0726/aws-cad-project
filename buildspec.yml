@@ -22,7 +22,7 @@ phases:
 
       - echo "Installing AWS CDK CLI..."
       - ls 
-      - cd aws-cad-project/wordpress-app
+      - cd wordpress-app
       - npm install -g aws-cdk  # 安装 AWS CDK CLI
       - npm install             # 安装 package.json 依赖
       - npm version
@@ -38,7 +38,7 @@ phases:
   build:
     commands:
       - echo "Building TypeScript code..."
-      - cd /aws-cad-project/wordpress-app
+      - cd wordpress-app
       - npm run build            # 编译 TypeScript
       - echo "Synthesizing CloudFormation template..."
       - cdk synth                # 生成 CloudFormation 模板
